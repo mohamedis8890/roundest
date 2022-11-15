@@ -1,6 +1,10 @@
 import { httpBatchLink, loggerLink } from "@trpc/client";
 import { createTRPCNext } from "@trpc/next";
-import { type inferRouterInputs, type inferRouterOutputs } from "@trpc/server";
+import {
+  type inferRouterInputs,
+  type inferRouterOutputs,
+  type inferProcedureOutput,
+} from "@trpc/server";
 import superjson from "superjson";
 
 import { type AppRouter } from "../server/trpc/router/_app";
@@ -29,6 +33,10 @@ export const trpc = createTRPCNext<AppRouter>({
   },
   ssr: false,
 });
+
+export type inferQueryResponse<
+  TRouteKey extends keyof AppRouter["_def"]["procedures"]["example"]
+> = inferProcedureOutput<AppRouter["_def"]["procedures"]["example"][TRouteKey]>;
 
 /**
  * Inference helper for inputs

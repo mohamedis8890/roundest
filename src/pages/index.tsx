@@ -1,11 +1,12 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getVotingOptions } from "../utils/getRandomPokemon";
-import { trpc } from "../utils/trpc";
+import { type inferQueryResponse, trpc } from "../utils/trpc";
 
 const Home: NextPage = () => {
+  /*
   const [first, setFirst] = useState<number | undefined>();
   const [second, setSecond] = useState<number | undefined>();
   const firstPokemon = trpc.example.getPokemonById.useQuery({ id: first });
@@ -20,16 +21,31 @@ const Home: NextPage = () => {
 
   if (firstPokemon.isLoading || seconfPokemon.isLoading) return null;
 
-  const voteForRoundestFirst = (id: number) => {
+  const voteForRoundestFirst = (id?: number) => {
     // TODO: Fire mutation to persist changes
     //
     setFirst(getVotingOptions(id)[0]);
   };
 
-  const voteForRoundestSecond = (id: number) => {
+  const voteForRoundestSecond = (id?: number) => {
     // TODO: Fire mutation to persist changes
     //
     setSecond(getVotingOptions(id)[1]);
+  };
+  */
+
+  const [ids, setIds] = useState(() => getVotingOptions());
+
+  const [first, second] = ids;
+
+  const firstPokemon = trpc.example.getPokemonById.useQuery({ id: first });
+  const secondPokemon = trpc.example.getPokemonById.useQuery({ id: second });
+  if (firstPokemon.isLoading || secondPokemon.isLoading) return null;
+
+  const voteForRoundest = (selected?: number) => {
+    // TODO: Fire mutation to persist changes
+
+    setIds(getVotingOptions());
   };
 
   return (
@@ -42,40 +58,22 @@ const Home: NextPage = () => {
       <div className="flex h-screen w-screen flex-col items-center justify-center">
         <div className="text-center text-2xl">Which Pokemon is Roundest?</div>
         <div className="mt-8 flex max-w-2xl items-center justify-between rounded border p-8">
-          <div className="flex h-64 w-64 flex-col justify-center ">
-            <img
-              src={firstPokemon.data?.sprites.front_default}
-              alt={firstPokemon.data?.name}
-              className="w-full"
-            />
-            <div className="mt-[-2rem] mb-2 text-center text-2xl capitalize">
-              {firstPokemon.data?.name}
-            </div>
-            <button
-              className="mx-auto inline-flex items-center rounded border px-4"
-              onClick={() => voteForRoundestFirst(first)}
-            >
-              Roundest
-            </button>
-          </div>
-          <div className="p-8">VS</div>
-          <div className="flex h-64 w-64 flex-col justify-center ">
-            <img
-              src={seconfPokemon.data?.sprites.front_default}
-              alt={firstPokemon.data?.name}
-              className="w-full"
-            />
-            <div className="mt-[-2rem] mb-2 text-center text-2xl capitalize">
-              {seconfPokemon.data?.name}
-            </div>
-
-            <button
-              className="mx-auto inline-flex items-center rounded border px-4"
-              onClick={() => voteForRoundestSecond(second)}
-            >
-              Roundest
-            </button>
-          </div>
+          {!firstPokemon.isLoading &&
+            firstPokemon.data &&
+            !secondPokemon.isLoading &&
+            secondPokemon.data && (
+              <>
+                <PokemonListing
+                  pokemon={firstPokemon.data}
+                  vote={() => voteForRoundest(first)}
+                />
+                <div className="p-8">VS</div>
+                <PokemonListing
+                  pokemon={secondPokemon.data}
+                  vote={() => voteForRoundest(second)}
+                />
+              </>
+            )}
         </div>
       </div>
     </>
@@ -83,3 +81,29 @@ const Home: NextPage = () => {
 };
 
 export default Home;
+
+type PokemonFromServer = inferQueryResponse<"getPokemonById">;
+
+const PokemonListing: React.FC<{
+  pokemon: PokemonFromServer;
+  vote: () => void;
+}> = ({ pokemon, vote }) => {
+  return (
+    <div className="flex flex-col justify-center ">
+      <img
+        src={pokemon.sprites.front_default}
+        alt={pokemon.name}
+        className=" h-64 w-64"
+      />
+      <div className="mt-[-2rem] mb-2 text-center text-2xl capitalize">
+        {pokemon.name}
+      </div>
+      <button
+        className="mx-auto inline-flex items-center rounded border px-4 py-1"
+        onClick={() => vote()}
+      >
+        Roundest
+      </button>
+    </div>
+  );
+};
