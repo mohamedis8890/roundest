@@ -40,11 +40,17 @@ const Home: NextPage = () => {
 
   const firstPokemon = trpc.example.getPokemonById.useQuery({ id: first });
   const secondPokemon = trpc.example.getPokemonById.useQuery({ id: second });
+
+  const voteMutation = trpc.example.castVote.useMutation();
+
   if (firstPokemon.isLoading || secondPokemon.isLoading) return null;
 
   const voteForRoundest = (selected?: number) => {
-    // TODO: Fire mutation to persist changes
-
+    if (selected === first) {
+      voteMutation.mutate({ votedFor: first, votedAgainst: second });
+    } else {
+      voteMutation.mutate({ votedFor: second, votedAgainst: first });
+    }
     setIds(getVotingOptions());
   };
 
