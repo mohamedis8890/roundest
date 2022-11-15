@@ -23,6 +23,6 @@ export const exampleRouter = router({
         const api = new PokemonClient();
         pokemon = await api.getPokemonById(input.id);
       }
-      return pokemon;
+      return { name: pokemon?.name, sprites: pokemon?.sprites };
     }),
 });
