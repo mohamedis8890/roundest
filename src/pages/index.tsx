@@ -20,6 +20,18 @@ const Home: NextPage = () => {
 
   if (firstPokemon.isLoading || seconfPokemon.isLoading) return null;
 
+  const voteForRoundestFirst = (id: number) => {
+    // TODO: Fire mutation to persist changes
+    //
+    setFirst(getVotingOptions(id)[0]);
+  };
+
+  const voteForRoundestSecond = (id: number) => {
+    // TODO: Fire mutation to persist changes
+    //
+    setSecond(getVotingOptions(id)[1]);
+  };
+
   return (
     <>
       <Head>
@@ -30,26 +42,39 @@ const Home: NextPage = () => {
       <div className="flex h-screen w-screen flex-col items-center justify-center">
         <div className="text-center text-2xl">Which Pokemon is Roundest?</div>
         <div className="mt-8 flex max-w-2xl items-center justify-between rounded border p-8">
-          <div className="h-64 w-64 ">
+          <div className="flex h-64 w-64 flex-col justify-center ">
             <img
               src={firstPokemon.data?.sprites.front_default}
               alt={firstPokemon.data?.name}
               className="w-full"
             />
-            <div className="mt-[-2rem] text-center text-2xl capitalize">
+            <div className="mt-[-2rem] mb-2 text-center text-2xl capitalize">
               {firstPokemon.data?.name}
             </div>
+            <button
+              className="mx-auto inline-flex items-center rounded border px-4"
+              onClick={() => voteForRoundestFirst(first)}
+            >
+              Roundest
+            </button>
           </div>
           <div className="p-8">VS</div>
-          <div className="h-64 w-64 ">
+          <div className="flex h-64 w-64 flex-col justify-center ">
             <img
               src={seconfPokemon.data?.sprites.front_default}
               alt={firstPokemon.data?.name}
               className="w-full"
             />
-            <div className="mt-[-2rem] text-center text-2xl capitalize">
+            <div className="mt-[-2rem] mb-2 text-center text-2xl capitalize">
               {seconfPokemon.data?.name}
             </div>
+
+            <button
+              className="mx-auto inline-flex items-center rounded border px-4"
+              onClick={() => voteForRoundestSecond(second)}
+            >
+              Roundest
+            </button>
           </div>
         </div>
       </div>
