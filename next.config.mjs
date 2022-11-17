@@ -14,6 +14,7 @@ const config = {
     defaultLocale: "en",
   },
   images: {
+    minimumCacheTTL: 60000,
     loader: "default",
     remotePatterns: [
       {
