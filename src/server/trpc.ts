@@ -14,6 +14,7 @@ export const publicProcedure = t.procedure;
  * @note Example only, yours may vary depending on how your auth is setup
  **/
 const isAuthed = t.middleware(({ next, ctx }) => {
+  /*
   if (!ctx.session?.user?.email) {
     throw new TRPCError({
       code: "UNAUTHORIZED",
@@ -25,6 +26,8 @@ const isAuthed = t.middleware(({ next, ctx }) => {
       session: ctx.session,
     },
   });
+  */
+  return next({ ctx });
 });
 
 // Protected procedures for logged in users only
