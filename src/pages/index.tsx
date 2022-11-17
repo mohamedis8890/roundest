@@ -45,7 +45,7 @@ const Home: NextPage = () => {
 
   if (firstPokemon.isLoading || secondPokemon.isLoading) return null;
 
-  const voteForRoundest = (selected?: number) => {
+  const voteForRoundest = (selected: number) => {
     if (selected === first) {
       voteMutation.mutate({ votedFor: first, votedAgainst: second });
     } else {
