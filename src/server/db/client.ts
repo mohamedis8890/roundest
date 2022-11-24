@@ -2,6 +2,10 @@ import { PrismaClient } from "@prisma/client";
 
 import { env } from "../../env/server.mjs";
 
+//let env: { NODE_ENV: string };
+
+//import("../../env/server.mjs").then((res) => (env = res.env));
+
 declare global {
   // eslint-disable-next-line no-var
   var prisma: PrismaClient | undefined;

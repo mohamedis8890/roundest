@@ -22,10 +22,15 @@ export const exampleRouter = router({
     .query(async ({ input }) => {
       let pokemon;
       if (input.id) {
-        const pokeApiConnection = new PokemonClient();
-        pokemon = await pokeApiConnection.getPokemonById(input.id);
+        //const pokeApiConnection = new PokemonClient();
+        //pokemon = await pokeApiConnection.getPokemonById(input.id);
+        const pokemon = await prisma.pokemon.findFirst({
+          where: { id: input.id },
+        });
+        if (!pokemon) throw new Error("Not existing");
+        //return { name: pokemon.name, spriteUrl: pokemon.spriteUrl };
+        return pokemon;
       }
-      return { name: pokemon?.name, sprites: pokemon?.sprites };
     }),
   castVote: publicProcedure
     .input(z.object({ votedFor: z.number(), votedAgainst: z.number() }))

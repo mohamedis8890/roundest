@@ -2,13 +2,14 @@
   "name": "roundest",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "build": "next build",
     "dev": "next dev",
     "postinstall": "prisma generate",
     "lint": "next lint",
     "start": "next start",
-    "ts-node": "ts-node --compiler-options \"{\\\"module\\\":\\\"commonjs\\\"}\""
+    "ts-node": "ts-node-esm"
   },
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.4",

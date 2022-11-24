@@ -100,14 +100,14 @@ const PokemonListing: React.FC<{
   return (
     <div className="flex flex-col justify-center">
       <Image
-        src={`${pokemon.sprites?.front_default}`}
+        src={`${pokemon?.spriteUrl}`}
         alt="Pokemon"
         layout="fixed"
         width={256}
         height={256}
       />
       <div className="mt-[-2rem] mb-2 text-center text-2xl capitalize">
-        {pokemon.name}
+        {pokemon?.name}
       </div>
       <button
         className="mx-auto inline-flex items-center rounded border px-4 py-1"
