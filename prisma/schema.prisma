@@ -3,6 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
 }
 
 datasource db {
@@ -12,21 +13,31 @@ datasource db {
   // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
   // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
   url               = env("DATABASE_URL")
-  shadowDatabaseUrl = env("SHADOW_DB_URL")
+  //shadowDatabaseUrl = env("SHADOW_DB_URL")
+  referentialIntegrity = "prisma"
 }
 
-model Example {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
 
 model Vote {
   id           String @id @default(cuid())
   createdAt    DateTime @default(now())
 
-  votedFor     Int
-  votedAgainst Int
+  votedForId     Int
+  votedFor       Pokemon @relation(name: "votesFor", fields: [votedForId], references: [id])
+  votedAgainstId Int
+  votedAgainst   Pokemon @relation(name: "votesAgainst", fields: [votedAgainstId], references: [id])
+
+  @@index([votedForId])
+  @@index([votedAgainstId])
+}
+
+model Pokemon {
+  id           Int @id
+  name         String
+  spriteUrl    String
+
+  voteFor     Vote[] @relation("votesFor")
+  voteAgainst Vote[] @relation("votesAgainst")
 }
 
 

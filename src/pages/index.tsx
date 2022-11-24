@@ -72,13 +72,11 @@ const Home: NextPage = () => {
                 <PokemonListing
                   pokemon={firstPokemon.data}
                   vote={() => voteForRoundest(first)}
-                  id={first}
                 />
                 <div className="p-8">VS</div>
                 <PokemonListing
                   pokemon={secondPokemon.data}
                   vote={() => voteForRoundest(second)}
-                  id={second}
                 />
               </>
             )}
@@ -98,8 +96,7 @@ type PokemonFromServer = inferQueryResponse<"getPokemonById">;
 const PokemonListing: React.FC<{
   pokemon: PokemonFromServer;
   vote: () => void;
-  id: number;
-}> = ({ pokemon, vote, id }) => {
+}> = ({ pokemon, vote }) => {
   return (
     <div className="flex flex-col justify-center">
       <Image
