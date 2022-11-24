@@ -1,39 +1,11 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { getVotingOptions } from "../utils/getRandomPokemon";
 import { type inferQueryResponse, trpc } from "../utils/trpc";
 
 const Home: NextPage = () => {
-  /*
-  const [first, setFirst] = useState<number | undefined>();
-  const [second, setSecond] = useState<number | undefined>();
-  const firstPokemon = trpc.example.getPokemonById.useQuery({ id: first });
-  const seconfPokemon = trpc.example.getPokemonById.useQuery({ id: second });
-
-  useEffect(() => {
-    const [firstP, secondP] = getVotingOptions();
-
-    setFirst(firstP);
-    setSecond(secondP);
-  }, []);
-
-  if (firstPokemon.isLoading || seconfPokemon.isLoading) return null;
-
-  const voteForRoundestFirst = (id?: number) => {
-    // TODO: Fire mutation to persist changes
-    //
-    setFirst(getVotingOptions(id)[0]);
-  };
-
-  const voteForRoundestSecond = (id?: number) => {
-    // TODO: Fire mutation to persist changes
-    //
-    setSecond(getVotingOptions(id)[1]);
-  };
-  */
-
   const [ids, setIds] = useState(() => getVotingOptions());
 
   const [first, second] = ids;
