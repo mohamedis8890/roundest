@@ -1,6 +1,7 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
+import Link from "next/link";
 import React, { useState } from "react";
 import { getVotingOptions } from "../utils/getRandomPokemon";
 import { type inferQueryResponse, trpc } from "../utils/trpc";
@@ -63,6 +64,8 @@ const Home: NextPage = () => {
         )}
         <div className="absolute bottom-0 w-full pb-2 text-center text-xl">
           <a href="https://github.com/mohamedis8890/roundest">Github Repo</a>
+          {" | "}
+          <Link href="/results">Results</Link>
         </div>
       </div>
     </>
